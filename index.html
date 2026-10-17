@@ -143,7 +143,7 @@
           </div>
         </div>
 
-        <!-- STEP 2: The Question Card -->
+        <!-- STEP 2: The Question Card with Confirm Button -->
         <div id="quizQuestionBox" class="quiz-step">
           <div class="quiz-progress-bar">
             <div id="quizProgressBarFill" class="progress-fill"></div>
@@ -155,11 +155,20 @@
 
           <h3 id="questionTitle" class="question-title">Loading Question...</h3>
 
+          <!-- Options List -->
           <div id="optionsContainer" class="options-container"></div>
+
+          <!-- Confirm Button Wrapper (Reveals after clicking an option) -->
+          <div id="confirmWrapper" class="confirm-wrapper">
+            <button id="confirmBtn" class="btn-primary btn-confirm" onclick="confirmCurrentAnswer()">
+              <span>Confirm My Choice</span> <i class="fa-solid fa-heart"></i>
+            </button>
+          </div>
+
           <div id="answerReaction" class="reaction-toast"></div>
         </div>
 
-        <!-- STEP 3: Results & Sweet Appreciation Screen -->
+        <!-- STEP 3: Results Screen -->
         <div id="quizResultBox" class="quiz-step">
           <div class="result-celebration">
             <div class="confetti-icon">💌</div>
@@ -199,7 +208,7 @@
     </div>
   </div>
 
-  <!-- Core JavaScript -->
+  <!-- Script -->
   <script src="script.js"></script>
 </body>
 </html>

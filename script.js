@@ -1,5 +1,5 @@
 /* ==========================================================================
-   JAVASCRIPT — Floating Canvas, Modals, Questions & Web3Forms Email Alert
+   JAVASCRIPT — With Option Selection, Confirm Button & Email Notification
    ========================================================================== */
 
 // 🔑 PASTE YOUR WEB3FORMS ACCESS KEY HERE:
@@ -130,7 +130,6 @@ function generateRandomCompliment() {
 
 
 // --- 4. QUESTIONS FOR HER ---
-// You can edit or add any questions/options you like:
 const herQuestions = [
   {
     question: "When you want to feel relaxed and happy, what do you prefer most?",
@@ -177,9 +176,10 @@ const herQuestions = [
 let herName = "";
 let currentQIndex = 0;
 let recordedAnswers = [];
+let temporarilySelectedOption = null; // stores her click before confirming
 
 
-// --- 5. GAME FLOW & QUESTION LOGIC ---
+// --- 5. QUIZ GAME FLOW ---
 function startQuizWithName() {
   const input = document.getElementById("playerNameInput");
   const error = document.getElementById("nameError");
@@ -194,6 +194,7 @@ function startQuizWithName() {
   herName = nameVal;
   currentQIndex = 0;
   recordedAnswers = [];
+  temporarilySelectedOption = null;
 
   document.getElementById("quizNamePrompt").classList.remove("active");
   document.getElementById("quizQuestionBox").classList.add("active");
@@ -202,6 +203,7 @@ function startQuizWithName() {
 }
 
 function renderQuestion() {
+  temporarilySelectedOption = null;
   const qData = herQuestions[currentQIndex];
   const total = herQuestions.length;
 
@@ -210,6 +212,10 @@ function renderQuestion() {
   document.getElementById("questionTitle").textContent = qData.question;
   document.getElementById("answerReaction").textContent = "";
 
+  // Hide the confirm button until an option is clicked
+  const confirmWrapper = document.getElementById("confirmWrapper");
+  confirmWrapper.classList.remove("show");
+
   const container = document.getElementById("optionsContainer");
   container.innerHTML = "";
 
@@ -217,32 +223,56 @@ function renderQuestion() {
     const btn = document.createElement("button");
     btn.className = "option-btn";
     btn.innerHTML = `<span>${optText}</span> <i class="fa-regular fa-heart"></i>`;
-    btn.onclick = () => selectAnswer(optText, btn);
+    
+    // Clicking selects the option and reveals the Confirm button
+    btn.onclick = () => selectOptionTemp(optText, btn);
     container.appendChild(btn);
   });
 }
 
-function selectAnswer(selectedAnswer, btn) {
-  // Disable options after selection
-  document.querySelectorAll(".option-btn").forEach(b => (b.disabled = true));
-  btn.classList.add("selected");
+// Called when she clicks any option: highlights it and displays the Confirm button
+function selectOptionTemp(selectedText, btnElement) {
+  temporarilySelectedOption = selectedText;
 
-  // Record question & selected answer
+  // Remove selected class from all other buttons
+  const allBtns = document.querySelectorAll(".option-btn");
+  allBtns.forEach((b) => b.classList.remove("selected"));
+
+  // Highlight this one
+  btnElement.classList.add("selected");
+
+  // Show the Confirm button
+  const confirmWrapper = document.getElementById("confirmWrapper");
+  confirmWrapper.classList.add("show");
+}
+
+// Called when she clicks "Confirm My Choice"
+function confirmCurrentAnswer() {
+  if (!temporarilySelectedOption) return;
+
+  // Disable options and confirm button to prevent double-submitting
+  document.querySelectorAll(".option-btn").forEach((b) => (b.disabled = true));
+  document.getElementById("confirmBtn").disabled = true;
+
+  // Save the answer
   recordedAnswers.push({
     question: herQuestions[currentQIndex].question,
-    answer: selectedAnswer
+    answer: temporarilySelectedOption
   });
 
+  // Display warm feedback toast
   document.getElementById("answerReaction").textContent = herQuestions[currentQIndex].compliment;
 
+  // Progress to next question or results
   setTimeout(() => {
+    document.getElementById("confirmBtn").disabled = false;
     currentQIndex++;
     if (currentQIndex < herQuestions.length) {
       renderQuestion();
     } else {
       finishAndSendAnswers();
     }
-  }, 800);
+  }, 750);
 }
 
 function finishAndSendAnswers() {
@@ -291,16 +321,16 @@ function sendEmailNotification(name, answers) {
       message: emailBody
     })
   })
-  .then(res => res.json())
-  .then(data => {
+  .then((res) => res.json())
+  .then((data) => {
     if (data.success) {
       console.log("Email delivered to Kaif successfully!");
-      if (statusEl) statusEl.textContent = "🌸 (Sent directly to Kaif's inbox)";
+      if (statusEl) statusEl.textContent = "🌸 (Answers sent directly to Kaif's inbox)";
     } else {
       console.error("Web3Forms error:", data);
     }
   })
-  .catch(err => {
+  .catch((err) => {
     console.error("Failed to send submission email:", err);
   });
 }

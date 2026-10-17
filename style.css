@@ -442,7 +442,7 @@ body {
 
 .option-btn {
   background: rgba(255, 255, 255, 0.88);
-  border: 1px solid rgba(255, 255, 255, 0.95);
+  border: 2px solid rgba(255, 255, 255, 0.95);
   border-radius: 16px;
   padding: 16px 20px;
   text-align: left;
@@ -450,7 +450,7 @@ body {
   font-size: 1rem;
   color: var(--dark-plum);
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.25s ease;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -462,11 +462,55 @@ body {
   transform: translateX(4px);
 }
 
+/* Selected option highlight */
 .option-btn.selected {
-  background: #fdf2f4;
+  background: #fff5f7;
   border-color: var(--soft-rose);
   color: var(--deep-wine);
   font-weight: 600;
+  box-shadow: 0 4px 15px rgba(214, 123, 141, 0.2);
+}
+
+.option-btn.selected i {
+  font-weight: 900;
+  color: var(--soft-rose);
+}
+
+/* Confirm Button Section */
+.confirm-wrapper {
+  margin-top: 22px;
+  display: none;
+  text-align: center;
+  animation: slideUp 0.35s ease forwards;
+}
+
+.confirm-wrapper.show {
+  display: block;
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.btn-confirm {
+  background: linear-gradient(135deg, #d67b8d, #c55d72);
+  padding: 14px 38px;
+  font-size: 1.05rem;
+  border-radius: 35px;
+  box-shadow: 0 6px 18px rgba(214, 123, 141, 0.35);
+  animation: pulseButton 2s infinite;
+}
+
+.btn-confirm:hover {
+  background: linear-gradient(135deg, #c55d72, #b2485e);
+  transform: translateY(-2px) scale(1.02);
+}
+
+@keyframes pulseButton {
+  0% { box-shadow: 0 0 0 0 rgba(214, 123, 141, 0.4); }
+  70% { box-shadow: 0 0 0 10px rgba(214, 123, 141, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(214, 123, 141, 0); }
 }
 
 .reaction-toast {
