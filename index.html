@@ -123,7 +123,7 @@
       <div class="section-heading">
         <span class="script-subtitle">A Little Game Just For Her</span>
         <h2 class="section-title">Answer a Few Questions</h2>
-        <p class="section-desc">Pick what feels closest to your heart!</p>
+        <p class="section-desc">Pick an option or write your very own thoughts!</p>
         <div class="rose-divider">🌸 ✻ 🌸</div>
       </div>
 
@@ -143,14 +143,14 @@
           </div>
         </div>
 
-        <!-- STEP 2: The Question Card with Confirm Button -->
+        <!-- STEP 2: The Question Card with Custom Text Area & Confirm Button -->
         <div id="quizQuestionBox" class="quiz-step">
           <div class="quiz-progress-bar">
             <div id="quizProgressBarFill" class="progress-fill"></div>
           </div>
 
           <div class="quiz-header-meta">
-            <span id="quizCounterText">Question 1 of 4</span>
+            <span id="quizCounterText">Question 1 of 5</span>
           </div>
 
           <h3 id="questionTitle" class="question-title">Loading Question...</h3>
@@ -158,7 +158,15 @@
           <!-- Options List -->
           <div id="optionsContainer" class="options-container"></div>
 
-          <!-- Confirm Button Wrapper (Reveals after clicking an option) -->
+          <!-- Custom User Thought Input Box (Appears when she picks "Write my own thought") -->
+          <div id="customThoughtBox" class="custom-thought-container">
+            <label for="customThoughtInput" class="custom-thought-label">
+              <i class="fa-solid fa-pen-nib"></i> Write your personal thought:
+            </label>
+            <textarea id="customThoughtInput" rows="3" placeholder="Type anything that's on your heart..."></textarea>
+          </div>
+
+          <!-- Confirm Button Wrapper -->
           <div id="confirmWrapper" class="confirm-wrapper">
             <button id="confirmBtn" class="btn-primary btn-confirm" onclick="confirmCurrentAnswer()">
               <span>Confirm My Choice</span> <i class="fa-solid fa-heart"></i>
@@ -174,7 +182,7 @@
             <div class="confetti-icon">💌</div>
             <h3 id="resultNameCongrats">Thank You!</h3>
             <p id="resultFeedback" class="result-feedback">
-              Your answers have been softly saved and sent to Kaif. You're wonderful! ✨
+              Your answers & thoughts have been softly saved and delivered to Kaif. You are truly special! ✨
             </p>
             <p id="sendStatus" class="send-status-text"></p>
 
@@ -208,7 +216,6 @@
     </div>
   </div>
 
-  <!-- Script -->
   <script src="script.js"></script>
 </body>
 </html>

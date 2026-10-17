@@ -415,7 +415,7 @@ body {
 
 .progress-fill {
   height: 100%;
-  width: 25%;
+  width: 20%;
   background: linear-gradient(90deg, var(--soft-rose), var(--champagne-gold));
   transition: width 0.3s ease;
 }
@@ -462,7 +462,12 @@ body {
   transform: translateX(4px);
 }
 
-/* Selected option highlight */
+.option-btn.custom-btn {
+  border-style: dashed;
+  background: rgba(255, 250, 245, 0.85);
+  color: #8c5b3e;
+}
+
 .option-btn.selected {
   background: #fff5f7;
   border-color: var(--soft-rose);
@@ -476,7 +481,46 @@ body {
   color: var(--soft-rose);
 }
 
-/* Confirm Button Section */
+/* Custom Thought Textarea Box */
+.custom-thought-container {
+  display: none;
+  margin-top: 16px;
+  animation: fadeIn 0.3s ease;
+  text-align: left;
+}
+
+.custom-thought-container.show {
+  display: block;
+}
+
+.custom-thought-label {
+  display: block;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--deep-wine);
+  margin-bottom: 6px;
+}
+
+.custom-thought-container textarea {
+  width: 100%;
+  padding: 14px 16px;
+  border-radius: 14px;
+  border: 1.5px solid rgba(214, 123, 141, 0.5);
+  background: #fff;
+  font-family: var(--font-sans);
+  font-size: 0.98rem;
+  outline: none;
+  resize: vertical;
+  color: var(--dark-plum);
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.03);
+}
+
+.custom-thought-container textarea:focus {
+  border-color: var(--soft-rose);
+  box-shadow: 0 0 10px rgba(214, 123, 141, 0.3);
+}
+
+/* Confirm Button */
 .confirm-wrapper {
   margin-top: 22px;
   display: none;

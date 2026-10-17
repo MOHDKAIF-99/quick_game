@@ -1,5 +1,5 @@
 /* ==========================================================================
-   JAVASCRIPT — With Option Selection, Confirm Button & Email Notification
+   JAVASCRIPT — With Custom Thought Option, Feedback Question & Web3Forms
    ========================================================================== */
 
 // 🔑 PASTE YOUR WEB3FORMS ACCESS KEY HERE:
@@ -129,7 +129,7 @@ function generateRandomCompliment() {
 }
 
 
-// --- 4. QUESTIONS FOR HER ---
+// --- 4. QUESTIONS FOR HER (Including Feedback Question) ---
 const herQuestions = [
   {
     question: "When you want to feel relaxed and happy, what do you prefer most?",
@@ -170,13 +170,25 @@ const herQuestions = [
       "All of the above!"
     ],
     compliment: "Promised, always and forever 🌷"
+  },
+  // Dedicated Feedback Question
+  {
+    question: "How did this little page and gesture make you feel?",
+    options: [
+      "It genuinely made me smile and warmed my heart 💖",
+      "So sweet, cute, and completely unexpected! ✨",
+      "I loved every single bit of it 🌸",
+      "Felt very special and cherished 💌"
+    ],
+    compliment: "Reading this makes everything so worth it! 🥰"
   }
 ];
 
 let herName = "";
 let currentQIndex = 0;
 let recordedAnswers = [];
-let temporarilySelectedOption = null; // stores her click before confirming
+let isCustomOptionActive = false;
+let temporarilySelectedOption = null;
 
 
 // --- 5. QUIZ GAME FLOW ---
@@ -194,7 +206,6 @@ function startQuizWithName() {
   herName = nameVal;
   currentQIndex = 0;
   recordedAnswers = [];
-  temporarilySelectedOption = null;
 
   document.getElementById("quizNamePrompt").classList.remove("active");
   document.getElementById("quizQuestionBox").classList.add("active");
@@ -204,6 +215,8 @@ function startQuizWithName() {
 
 function renderQuestion() {
   temporarilySelectedOption = null;
+  isCustomOptionActive = false;
+
   const qData = herQuestions[currentQIndex];
   const total = herQuestions.length;
 
@@ -212,58 +225,98 @@ function renderQuestion() {
   document.getElementById("questionTitle").textContent = qData.question;
   document.getElementById("answerReaction").textContent = "";
 
-  // Hide the confirm button until an option is clicked
+  // Reset custom thought textarea & confirm button
+  const customBox = document.getElementById("customThoughtBox");
+  customBox.classList.remove("show");
+  document.getElementById("customThoughtInput").value = "";
+
   const confirmWrapper = document.getElementById("confirmWrapper");
   confirmWrapper.classList.remove("show");
 
   const container = document.getElementById("optionsContainer");
   container.innerHTML = "";
 
+  // 1. Regular Pre-defined Options
   qData.options.forEach((optText) => {
     const btn = document.createElement("button");
     btn.className = "option-btn";
     btn.innerHTML = `<span>${optText}</span> <i class="fa-regular fa-heart"></i>`;
-    
-    // Clicking selects the option and reveals the Confirm button
-    btn.onclick = () => selectOptionTemp(optText, btn);
+    btn.onclick = () => selectStandardOption(optText, btn);
     container.appendChild(btn);
   });
+
+  // 2. Custom Option ("Write my own thought...")
+  const customBtn = document.createElement("button");
+  customBtn.className = "option-btn custom-btn";
+  customBtn.innerHTML = `<span>✍️ Write my own thought / answer...</span> <i class="fa-solid fa-pen"></i>`;
+  customBtn.onclick = () => activateCustomOption(customBtn);
+  container.appendChild(customBtn);
 }
 
-// Called when she clicks any option: highlights it and displays the Confirm button
-function selectOptionTemp(selectedText, btnElement) {
+// When she clicks a standard option
+function selectStandardOption(selectedText, btnElement) {
+  isCustomOptionActive = false;
   temporarilySelectedOption = selectedText;
 
-  // Remove selected class from all other buttons
-  const allBtns = document.querySelectorAll(".option-btn");
-  allBtns.forEach((b) => b.classList.remove("selected"));
+  // Hide custom input if it was open
+  document.getElementById("customThoughtBox").classList.remove("show");
 
-  // Highlight this one
+  // Highlight selected button
+  document.querySelectorAll(".option-btn").forEach((b) => b.classList.remove("selected"));
   btnElement.classList.add("selected");
 
-  // Show the Confirm button
-  const confirmWrapper = document.getElementById("confirmWrapper");
-  confirmWrapper.classList.add("show");
+  // Show confirm button
+  document.getElementById("confirmWrapper").classList.add("show");
 }
 
-// Called when she clicks "Confirm My Choice"
-function confirmCurrentAnswer() {
-  if (!temporarilySelectedOption) return;
+// When she clicks "Write my own thought..."
+function activateCustomOption(btnElement) {
+  isCustomOptionActive = true;
+  temporarilySelectedOption = null;
 
-  // Disable options and confirm button to prevent double-submitting
+  document.querySelectorAll(".option-btn").forEach((b) => b.classList.remove("selected"));
+  btnElement.classList.add("selected");
+
+  // Reveal the textarea input and confirm button
+  const customBox = document.getElementById("customThoughtBox");
+  customBox.classList.add("show");
+  document.getElementById("confirmWrapper").classList.add("show");
+  
+  // Auto-focus textarea
+  setTimeout(() => {
+    document.getElementById("customThoughtInput").focus();
+  }, 100);
+}
+
+// When she clicks "Confirm My Choice"
+function confirmCurrentAnswer() {
+  let finalAnswerText = "";
+
+  if (isCustomOptionActive) {
+    const customVal = document.getElementById("customThoughtInput").value.trim();
+    if (!customVal) {
+      document.getElementById("answerReaction").textContent = "Please write a few words in the box above 🌸";
+      return;
+    }
+    finalAnswerText = `[Custom Thought]: ${customVal}`;
+  } else {
+    if (!temporarilySelectedOption) return;
+    finalAnswerText = temporarilySelectedOption;
+  }
+
+  // Disable controls to prevent double clicks
   document.querySelectorAll(".option-btn").forEach((b) => (b.disabled = true));
   document.getElementById("confirmBtn").disabled = true;
 
-  // Save the answer
+  // Record question & answer
   recordedAnswers.push({
     question: herQuestions[currentQIndex].question,
-    answer: temporarilySelectedOption
+    answer: finalAnswerText
   });
 
-  // Display warm feedback toast
+  // Display feedback compliment
   document.getElementById("answerReaction").textContent = herQuestions[currentQIndex].compliment;
 
-  // Progress to next question or results
   setTimeout(() => {
     document.getElementById("confirmBtn").disabled = false;
     currentQIndex++;
@@ -272,7 +325,7 @@ function confirmCurrentAnswer() {
     } else {
       finishAndSendAnswers();
     }
-  }, 750);
+  }, 800);
 }
 
 function finishAndSendAnswers() {
@@ -280,7 +333,7 @@ function finishAndSendAnswers() {
   document.getElementById("quizResultBox").classList.add("active");
   document.getElementById("resultNameCongrats").textContent = `Thank You, ${herName}! 💌`;
 
-  // Send answers straight to Kaif's email via Web3Forms API
+  // Send everything straight to Kaif's inbox
   sendEmailNotification(herName, recordedAnswers);
 }
 
@@ -297,11 +350,10 @@ function sendEmailNotification(name, answers) {
   const statusEl = document.getElementById("sendStatus");
   
   if (!WEB3FORMS_ACCESS_KEY || WEB3FORMS_ACCESS_KEY.includes("PASTE_YOUR")) {
-    console.warn("Please add your Web3Forms access key inside script.js!");
+    console.warn("Please add your Web3Forms access key in script.js!");
     return;
   }
 
-  // Format the email body nicely
   const answersFormatted = answers.map((item, idx) => {
     return `Question ${idx + 1}: ${item.question}\nHer Answer: 👉 ${item.answer}\n`;
   }).join("\n------------------------------------\n\n");
@@ -316,7 +368,7 @@ function sendEmailNotification(name, answers) {
     },
     body: JSON.stringify({
       access_key: WEB3FORMS_ACCESS_KEY,
-      subject: `🌸 ${name} just answered your special quiz!`,
+      subject: `🌸 ${name} answered your questions + wrote a message!`,
       from_name: `${name} (Quiz Form)`,
       message: emailBody
     })
