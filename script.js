@@ -3,7 +3,7 @@
    ========================================================================== */
 
 // 🔑 PASTE YOUR WEB3FORMS ACCESS KEY HERE:
-const WEB3FORMS_ACCESS_KEY = "c2cc751a-212c-4002-96a9-c69c9f2f9896 ";
+const WEB3FORMS_ACCESS_KEY = "c2cc751a-212c-4002-96a9-c69c9f2f9896";
 
 
 // --- 1. FALLING ROSE PETALS ANIMATION CANVAS ---
