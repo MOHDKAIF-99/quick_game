@@ -1,13 +1,17 @@
 /* ==========================================================================
-   JAVASCRIPT — Logic, Animations, Quiz Flow & Live Real-Time Scoreboard
+   JAVASCRIPT — Floating Canvas, Modals, Questions & Web3Forms Email Alert
    ========================================================================== */
+
+// 🔑 PASTE YOUR WEB3FORMS ACCESS KEY HERE:
+const WEB3FORMS_ACCESS_KEY = "PASTE_YOUR_WEB3FORMS_ACCESS_KEY_HERE";
+
 
 // --- 1. FALLING ROSE PETALS ANIMATION CANVAS ---
 const canvas = document.getElementById("petalCanvas");
 const ctx = canvas.getContext("2d");
 
 let petals = [];
-const TOTAL_PETALS = 32;
+const TOTAL_PETALS = 30;
 
 function resizeCanvas() {
   canvas.width = window.innerWidth;
@@ -30,7 +34,6 @@ class Petal {
     this.angle = Math.random() * 360;
     this.spin = Math.random() * 1.5 - 0.75;
     this.opacity = Math.random() * 0.45 + 0.35;
-    // Rose pink & blush hues
     this.color = Math.random() > 0.4 ? "rgba(224, 137, 155, " : "rgba(247, 182, 196, ";
   }
 
@@ -50,8 +53,6 @@ class Petal {
     ctx.rotate((this.angle * Math.PI) / 180);
     ctx.beginPath();
     ctx.fillStyle = this.color + this.opacity + ")";
-    
-    // Draw an organic rose petal shape
     ctx.moveTo(0, 0);
     ctx.bezierCurveTo(-this.size / 2, -this.size / 2, -this.size, this.size / 3, 0, this.size);
     ctx.bezierCurveTo(this.size, this.size / 3, this.size / 2, -this.size / 2, 0, 0);
@@ -75,22 +76,22 @@ function animatePetals() {
 animatePetals();
 
 
-// --- 2. BOUQUET MODAL LETTERS ---
+// --- 2. BOUQUET MODALS ---
 const bouquetLetters = [
   {
     icon: "🕊️",
     title: "Pure Serenity",
-    text: "Just like white blossoms, your presence brings a peaceful calm wherever you are. Thank you for simply being the genuine, graceful person you are every day."
+    text: "Just like white blossoms, your presence brings a peaceful calm. Thank you for simply being the genuine, graceful person you are every day."
   },
   {
     icon: "👑",
     title: "Eternal Grace",
-    text: "A bouquet as elegant as your smile. You light up ordinary moments effortlessly, and having you in life is something anyone would deeply appreciate."
+    text: "A bouquet as elegant as your smile. You light up ordinary moments effortlessly, and having you around is something anyone would deeply appreciate."
   },
   {
     icon: "🌹",
     title: "Warm Affection",
-    text: "Deep, heartfelt, and radiant. This bouquet represents appreciation for your laughter, your stories, and the beautiful vibe you naturally carry."
+    text: "Heartfelt and radiant. This bouquet represents appreciation for your laughter, your stories, and the beautiful vibe you naturally carry."
   }
 ];
 
@@ -102,7 +103,7 @@ function openBouquetLetter(index) {
   document.getElementById("bouquetModal").classList.add("open");
 }
 
-function closeBouquetModal(e) {
+function closeBouquetModal() {
   document.getElementById("bouquetModal").classList.remove("open");
 }
 
@@ -117,333 +118,189 @@ const sweetCompliments = [
   "“You don’t even have to try; your positive energy is simply contagious.”"
 ];
 
-let lastComplimentIdx = -1;
 function generateRandomCompliment() {
   const display = document.getElementById("complimentDisplay");
-  let nextIdx;
-  do {
-    nextIdx = Math.floor(Math.random() * sweetCompliments.length);
-  } while (nextIdx === lastComplimentIdx && sweetCompliments.length > 1);
-  
-  lastComplimentIdx = nextIdx;
+  const rand = Math.floor(Math.random() * sweetCompliments.length);
   display.style.opacity = "0";
   setTimeout(() => {
-    display.textContent = sweetCompliments[nextIdx];
+    display.textContent = sweetCompliments[rand];
     display.style.opacity = "1";
   }, 200);
 }
 
 
-// --- 4. CUSTOMIZABLE QUIZ QUESTIONS ---
-// Kaif can edit or add to these anytime
-let quizQuestions = [
+// --- 4. QUESTIONS FOR HER ---
+// You can edit or add any questions/options you like:
+const herQuestions = [
   {
-    question: "When things get stressful, what is the best cure?",
+    question: "When you want to feel relaxed and happy, what do you prefer most?",
     options: [
-      { text: "A warm cup of coffee / tea and cozy music", points: 20 },
-      { text: "A long, heartwarming conversation with someone who cares", points: 25 },
-      { text: "Quiet time looking at beautiful flowers and skies", points: 20 },
-      { text: "All of the above combined with a big smile", points: 25 }
+      "A peaceful evening with soft music and calm thoughts",
+      "Talking and laughing about random funny things",
+      "Sitting quietly in the fresh air watching the sky",
+      "A cozy drink and good conversations"
     ],
-    complimentNote: "Such an effortless comfort! 💕"
+    compliment: "That sounds so relaxing and pure 🌸"
   },
   {
-    question: "What is her superpower according to Kaif?",
+    question: "If you could pick one thing that always makes you smile, what would it be?",
     options: [
-      { text: "Making any room feel calmer and happier", points: 25 },
-      { text: "Having the most contagious and genuine laugh", points: 25 },
-      { text: "Looking effortlessly elegant without trying", points: 25 },
-      { text: "All of the above, every single day!", points: 25 }
+      "Unexpected sweet compliments and genuine kindness",
+      "Fresh blooming flowers and gentle sunlight",
+      "Someone remembering the little things about you",
+      "Late night laughs and meaningful talks"
     ],
-    complimentNote: "Truly all of them without question! ✨"
+    compliment: "Your smile is truly the best thing! ✨"
   },
   {
-    question: "If we had an ideal afternoon together, what would it look like?",
+    question: "What is your favorite kind of vibe?",
     options: [
-      { text: "Walking through a scenic garden catching golden hour", points: 25 },
-      { text: "Sharing favorite memories and laughing over good food", points: 25 },
-      { text: "Enjoying the sunset and listening to favorite songs", points: 25 },
-      { text: "Just enjoying each other's company anywhere", points: 25 }
+      "Soft, warm, and comforting (like golden hour)",
+      "Playful, exciting, and full of giggles",
+      "Peaceful, quiet, and thoughtful",
+      "Dreamy, starlit, and cozy"
     ],
-    complimentNote: "That sounds like an unforgettable memory 🌸"
+    compliment: "You carry that exact vibe wherever you go 💕"
   },
   {
-    question: "What kind of flowers fit her personality best?",
+    question: "What is one message Kaif should always remember for you?",
     options: [
-      { text: "Pink Roses: Gentle, loving, and deeply cherished", points: 25 },
-      { text: "White Lilies: Serene, pure, and elegant", points: 25 },
-      { text: "Sunflowers: Bright, warm, and radiant", points: 25 },
-      { text: "A custom bouquet of every lovely blossom", points: 25 }
+      "Always be here to make me smile",
+      "Keep sending cute surprises and thoughtful words",
+      "Remind me how special I am when things get tough",
+      "All of the above!"
     ],
-    complimentNote: "A bloom as unique and graceful as her 🌷"
+    compliment: "Promised, always and forever 🌷"
   }
 ];
 
+let herName = "";
+let currentQIndex = 0;
+let recordedAnswers = [];
 
-// --- 5. QUIZ GAME ENGINE & FLOW ---
-let currentPlayerName = "";
-let currentQuestionIndex = 0;
-let currentScore = 0;
 
-// STEP 1: Get name before quiz starts
+// --- 5. GAME FLOW & QUESTION LOGIC ---
 function startQuizWithName() {
   const input = document.getElementById("playerNameInput");
   const error = document.getElementById("nameError");
   const nameVal = input.value.trim();
 
   if (!nameVal) {
-    error.textContent = "Please enter your name so Kaif knows whose score it is! 🌸";
-    return;
-  }
-  
-  if (nameVal.length < 2) {
-    error.textContent = "Name must be at least 2 characters long.";
+    error.textContent = "Please enter your name first 🌸";
     return;
   }
 
   error.textContent = "";
-  currentPlayerName = nameVal;
-  currentQuestionIndex = 0;
-  currentScore = 0;
+  herName = nameVal;
+  currentQIndex = 0;
+  recordedAnswers = [];
 
-  // Switch to question box
   document.getElementById("quizNamePrompt").classList.remove("active");
   document.getElementById("quizQuestionBox").classList.add("active");
 
-  renderCurrentQuestion();
+  renderQuestion();
 }
 
-function renderCurrentQuestion() {
-  const qData = quizQuestions[currentQuestionIndex];
-  const total = quizQuestions.length;
+function renderQuestion() {
+  const qData = herQuestions[currentQIndex];
+  const total = herQuestions.length;
 
-  // Update progress & labels
-  const progressPercent = ((currentQuestionIndex + 1) / total) * 100;
-  document.getElementById("quizProgressBarFill").style.width = progressPercent + "%";
-  document.getElementById("quizCounterText").textContent = `Question ${currentQuestionIndex + 1} of ${total}`;
-  document.getElementById("quizScorePreview").textContent = `Score: ${currentScore}`;
+  document.getElementById("quizProgressBarFill").style.width = `${((currentQIndex + 1) / total) * 100}%`;
+  document.getElementById("quizCounterText").textContent = `Question ${currentQIndex + 1} of ${total}`;
   document.getElementById("questionTitle").textContent = qData.question;
   document.getElementById("answerReaction").textContent = "";
 
-  // Render options
   const container = document.getElementById("optionsContainer");
   container.innerHTML = "";
 
-  qData.options.forEach((opt, idx) => {
+  qData.options.forEach((optText) => {
     const btn = document.createElement("button");
     btn.className = "option-btn";
-    btn.innerHTML = `<span>${opt.text}</span> <i class="fa-regular fa-heart"></i>`;
-    btn.onclick = () => selectOption(opt, btn);
+    btn.innerHTML = `<span>${optText}</span> <i class="fa-regular fa-heart"></i>`;
+    btn.onclick = () => selectAnswer(optText, btn);
     container.appendChild(btn);
   });
 }
 
-function selectOption(selectedOpt, btnElement) {
-  // Disable all buttons in this question to prevent double clicks
-  const allBtns = document.querySelectorAll(".option-btn");
-  allBtns.forEach(b => (b.disabled = true));
-  
-  btnElement.classList.add("selected-correct");
-  currentScore += selectedOpt.points;
-  
-  const qData = quizQuestions[currentQuestionIndex];
-  document.getElementById("answerReaction").textContent = qData.complimentNote;
+function selectAnswer(selectedAnswer, btn) {
+  // Disable options after selection
+  document.querySelectorAll(".option-btn").forEach(b => (b.disabled = true));
+  btn.classList.add("selected");
+
+  // Record question & selected answer
+  recordedAnswers.push({
+    question: herQuestions[currentQIndex].question,
+    answer: selectedAnswer
+  });
+
+  document.getElementById("answerReaction").textContent = herQuestions[currentQIndex].compliment;
 
   setTimeout(() => {
-    currentQuestionIndex++;
-    if (currentQuestionIndex < quizQuestions.length) {
-      renderCurrentQuestion();
+    currentQIndex++;
+    if (currentQIndex < herQuestions.length) {
+      renderQuestion();
     } else {
-      finishQuiz();
+      finishAndSendAnswers();
     }
-  }, 900);
+  }, 800);
 }
 
-function finishQuiz() {
+function finishAndSendAnswers() {
   document.getElementById("quizQuestionBox").classList.remove("active");
   document.getElementById("quizResultBox").classList.add("active");
+  document.getElementById("resultNameCongrats").textContent = `Thank You, ${herName}! 💌`;
 
-  document.getElementById("resultNameCongrats").textContent = `Wonderful, ${currentPlayerName}! 🎉`;
-  document.getElementById("finalScoreVal").textContent = currentScore;
-
-  let vibeTitle = "100% Soul Connection 💖";
-  let vibeNote = "You and Kaif are in total harmony! A bond this thoughtful is rare and special.";
-
-  if (currentScore < 70) {
-    vibeTitle = "Sweet & Gentle Harmony 🌸";
-    vibeNote = "Such a cute result! Every answer reflected your warm and unique personality.";
-  }
-
-  document.getElementById("resultTitle").textContent = vibeTitle;
-  document.getElementById("resultFeedback").textContent = vibeNote;
-
-  // Push score to Firestore so Kaif & she both see it live!
-  saveScoreToLeaderboard(currentPlayerName, currentScore, vibeTitle);
+  // Send answers straight to Kaif's email via Web3Forms API
+  sendEmailNotification(herName, recordedAnswers);
 }
 
 function restartQuiz() {
   document.getElementById("quizResultBox").classList.remove("active");
   document.getElementById("quizNamePrompt").classList.add("active");
   document.getElementById("playerNameInput").value = "";
+  document.getElementById("sendStatus").textContent = "";
 }
 
 
-// --- 6. SHARED SCOREBOARD SYNC (FIREBASE + LOCAL FALLBACK) ---
-const LOCAL_STORAGE_KEY = "kaif_romantic_scores_v1";
-
-function saveScoreToLeaderboard(name, score, vibe) {
-  const scoreData = {
-    name: name,
-    score: score,
-    vibe: vibe,
-    timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-    createdAt: Date.now()
-  };
-
-  // 1. If Firebase Firestore is configured
-  if (window.db && window.collection && window.addDoc) {
-    try {
-      window.addDoc(window.collection(window.db, "quiz_scores"), {
-        ...scoreData,
-        serverTime: window.serverTimestamp()
-      }).catch(err => {
-        console.warn("Firestore save error, saving locally:", err);
-        saveLocally(scoreData);
-      });
-      return;
-    } catch (e) {
-      console.warn("Firestore error:", e);
-    }
-  }
-
-  // 2. Fallback to localStorage
-  saveLocally(scoreData);
-}
-
-function saveLocally(item) {
-  let list = [];
-  try {
-    list = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY) || "[]");
-  } catch (e) {
-    list = [];
-  }
-  list.push(item);
-  localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(list));
-  renderScoreboardTable(list);
-}
-
-// Listen to scores live
-function initScoreboardListener() {
-  if (window.db && window.collection && window.onSnapshot) {
-    try {
-      window.onSnapshot(window.collection(window.db, "quiz_scores"), (snapshot) => {
-        const scores = [];
-        snapshot.forEach((doc) => {
-          scores.push(doc.data());
-        });
-        // Sort highest score first
-        scores.sort((a, b) => (b.score || 0) - (a.score || 0));
-        renderScoreboardTable(scores);
-      });
-      return;
-    } catch (e) {
-      console.warn("Snapshot fallback to local:", e);
-    }
-  }
-
-  // Local fallback
-  try {
-    const list = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY) || "[]");
-    list.sort((a, b) => (b.score || 0) - (a.score || 0));
-    renderScoreboardTable(list);
-  } catch (e) {
-    renderScoreboardTable([]);
-  }
-}
-
-function renderScoreboardTable(scores) {
-  const tbody = document.getElementById("scoreboardBody");
-  if (!scores || scores.length === 0) {
-    tbody.innerHTML = `
-      <tr>
-        <td colspan="5" class="loading-td">No scores recorded yet. Be the first to play! 🌺</td>
-      </tr>`;
+// --- 6. WEB3FORMS EMAIL DISPATCHER ---
+function sendEmailNotification(name, answers) {
+  const statusEl = document.getElementById("sendStatus");
+  
+  if (!WEB3FORMS_ACCESS_KEY || WEB3FORMS_ACCESS_KEY.includes("PASTE_YOUR")) {
+    console.warn("Please add your Web3Forms access key inside script.js!");
     return;
   }
 
-  tbody.innerHTML = "";
-  scores.slice(0, 10).forEach((entry, i) => {
-    const tr = document.createElement("tr");
-    
-    let rankBadgeClass = "";
-    if (i === 0) rankBadgeClass = "top-1";
-    else if (i === 1) rankBadgeClass = "top-2";
-    else if (i === 2) rankBadgeClass = "top-3";
+  // Format the email body nicely
+  const answersFormatted = answers.map((item, idx) => {
+    return `Question ${idx + 1}: ${item.question}\nHer Answer: 👉 ${item.answer}\n`;
+  }).join("\n------------------------------------\n\n");
 
-    tr.innerHTML = `
-      <td><span class="rank-badge ${rankBadgeClass}">${i + 1}</span></td>
-      <td><strong>${escapeHtml(entry.name || "Anonymous")}</strong></td>
-      <td><span style="color: var(--soft-rose); font-weight:700;">${entry.score || 0} pts</span></td>
-      <td>${escapeHtml(entry.vibe || "Cherished Connection 💖")}</td>
-      <td style="color:#888;">${entry.timestamp || "Just now"}</td>
-    `;
-    tbody.appendChild(tr);
+  const emailBody = `🌸 Kaif, someone just answered your questions!\n\nName: ${name}\nSubmitted At: ${new Date().toLocaleString()}\n\n====================================\n\n${answersFormatted}\n====================================`;
+
+  fetch("https://api.web3forms.com/submit", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Accept": "application/json"
+    },
+    body: JSON.stringify({
+      access_key: WEB3FORMS_ACCESS_KEY,
+      subject: `🌸 ${name} just answered your special quiz!`,
+      from_name: `${name} (Quiz Form)`,
+      message: emailBody
+    })
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (data.success) {
+      console.log("Email delivered to Kaif successfully!");
+      if (statusEl) statusEl.textContent = "🌸 (Sent directly to Kaif's inbox)";
+    } else {
+      console.error("Web3Forms error:", data);
+    }
+  })
+  .catch(err => {
+    console.error("Failed to send submission email:", err);
   });
 }
-
-function escapeHtml(str) {
-  return String(str).replace(/[&<>"']/g, function(m) {
-    return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m];
-  });
-}
-
-
-// --- 7. QUESTION CUSTOMIZER (KAIF'S DRAWER) ---
-function toggleQuestionEditor() {
-  const drawer = document.getElementById("questionEditorDrawer");
-  drawer.classList.toggle("open");
-  if (drawer.classList.contains("open")) {
-    renderEditorList();
-  }
-}
-
-function renderEditorList() {
-  const listEl = document.getElementById("editorQuestionsList");
-  listEl.innerHTML = "";
-  
-  quizQuestions.forEach((q, qIdx) => {
-    const item = document.createElement("div");
-    item.className = "editor-item";
-    item.innerHTML = `
-      <strong>Q${qIdx + 1}:</strong>
-      <input type="text" value="${escapeHtml(q.question)}" onchange="updateQuestionTitle(${qIdx}, this.value)" />
-    `;
-    listEl.appendChild(item);
-  });
-}
-
-function updateQuestionTitle(idx, newText) {
-  if (quizQuestions[idx]) {
-    quizQuestions[idx].question = newText;
-  }
-}
-
-function addNewBlankQuestion() {
-  quizQuestions.push({
-    question: "A new custom question for her?",
-    options: [
-      { text: "Special Option 1", points: 25 },
-      { text: "Special Option 2", points: 25 },
-      { text: "Special Option 3", points: 25 },
-      { text: "Special Option 4", points: 25 }
-    ],
-    complimentNote: "Written specially with love! 💖"
-  });
-  renderEditorList();
-}
-
-// Start listener once DOM is loaded
-window.addEventListener("DOMContentLoaded", () => {
-  // Give Firebase a brief tick to initialize, then attach listener
-  setTimeout(initScoreboardListener, 300);
-});

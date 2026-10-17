@@ -7,58 +7,18 @@
   
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preconnect" href="https://fonts.gstatic.com" />
   <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
   
   <!-- FontAwesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
   
-  <!-- Main Stylesheet -->
+  <!-- Stylesheet -->
   <link rel="stylesheet" href="style.css" />
-
-  <!-- Firebase Modular SDK -->
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.3.0/firebase-app.js";
-    import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.3.0/firebase-auth.js";
-    import { 
-      getFirestore, 
-      collection, 
-      addDoc, 
-      onSnapshot, 
-      serverTimestamp 
-    } from "https://www.gstatic.com/firebasejs/11.3.0/firebase-firestore.js";
-
-    // Standard Firebase configuration
-    // Replace with your Firebase Project config if hosting yourself
-    const firebaseConfig = {
-      apiKey: "AIzaSyDummyKeyReplaceWithYourOwn",
-      authDomain: "your-app.firebaseapp.com",
-      projectId: "your-app",
-      storageBucket: "your-app.appspot.com",
-      messagingSenderId: "1234567890",
-      appId: "1:1234567890:web:abcdef123456"
-    };
-
-    try {
-      const app = initializeApp(firebaseConfig);
-      window.db = getFirestore(app);
-      window.auth = getAuth(app);
-      window.serverTimestamp = serverTimestamp;
-      window.addDoc = addDoc;
-      window.collection = collection;
-      window.onSnapshot = onSnapshot;
-
-      signInAnonymously(window.auth).catch((err) => {
-        console.warn("Firebase anonymous auth fallback:", err.message);
-      });
-    } catch (e) {
-      console.warn("Running in local storage fallback mode:", e);
-    }
-  </script>
 </head>
 <body>
 
-  <!-- Floating Falling Petals Background Canvas -->
+  <!-- Falling Rose Petals Canvas -->
   <canvas id="petalCanvas"></canvas>
 
   <div class="page-container">
@@ -72,7 +32,7 @@
       </div>
     </header>
 
-    <!-- Hero Card / Figma Aesthetic Showcase -->
+    <!-- Hero Card / Bouquet Showcase -->
     <section class="hero-showcase">
       <div class="glass-card main-hero-card">
         <div class="sub-label">THE WORLD OF BLOSSOMS</div>
@@ -81,22 +41,19 @@
         
         <div class="bouquet-row">
           <div class="bouquet-item" onclick="openBouquetLetter(0)">
-            <div class="bouquet-glow"></div>
-            <img src="https://images.unsplash.com/photo-1563245372-f21724e3856d?auto=format&fit=crop&w=400&q=80" alt="White Roses Bouquet" class="bouquet-img" />
+            <img src="https://images.unsplash.com/photo-1563245372-f21724e3856d?auto=format&fit=crop&w=400&q=80" alt="White Roses" class="bouquet-img" />
             <h4 class="bouquet-name">Pure Serenity</h4>
             <span class="open-pill">Click to Open 💌</span>
           </div>
 
           <div class="bouquet-item featured" onclick="openBouquetLetter(1)">
-            <div class="bouquet-glow"></div>
-            <img src="https://images.unsplash.com/photo-1526047932273-341f2a7631f9?auto=format&fit=crop&w=400&q=80" alt="Pastel Roses Bouquet" class="bouquet-img" />
+            <img src="https://images.unsplash.com/photo-1526047932273-341f2a7631f9?auto=format&fit=crop&w=400&q=80" alt="Pastel Roses" class="bouquet-img" />
             <h4 class="bouquet-name">Eternal Grace</h4>
             <span class="open-pill">Click to Open 💌</span>
           </div>
 
           <div class="bouquet-item" onclick="openBouquetLetter(2)">
-            <div class="bouquet-glow"></div>
-            <img src="https://images.unsplash.com/photo-1582794543139-8ac9cb0f7b11?auto=format&fit=crop&w=400&q=80" alt="Pink Roses Bouquet" class="bouquet-img" />
+            <img src="https://images.unsplash.com/photo-1582794543139-8ac9cb0f7b11?auto=format&fit=crop&w=400&q=80" alt="Pink Roses" class="bouquet-img" />
             <h4 class="bouquet-name">Warm Affection</h4>
             <span class="open-pill">Click to Open 💌</span>
           </div>
@@ -104,10 +61,10 @@
 
         <div class="hero-action-row">
           <a href="#quizSection" class="btn-primary">
-            <i class="fa-solid fa-gamepad"></i> Play Our Quiz Game
+            <i class="fa-solid fa-heart"></i> Play Her Special Quiz
           </a>
           <a href="#notesSection" class="btn-secondary">
-            <i class="fa-solid fa-heart"></i> Read Notes For Her
+            <i class="fa-solid fa-envelope-open-text"></i> Read Notes
           </a>
         </div>
       </div>
@@ -126,7 +83,7 @@
           <div class="pin-icon">📌</div>
           <h3>Your Beautiful Smile</h3>
           <p>
-            Whenever you smile, everything around feels lighter and gentler. 
+            Whenever you smile, everything feels lighter and gentler. 
             It has that effortless warmth that brightens even the most ordinary days.
           </p>
           <div class="note-tag">#PureMagic</div>
@@ -154,33 +111,33 @@
       </div>
 
       <div class="surprise-container">
-        <button id="surpriseBtn" class="btn-sparkle" onclick="generateRandomCompliment()">
+        <button class="btn-sparkle" onclick="generateRandomCompliment()">
           <span>✨ Click for a Surprise Compliment</span>
         </button>
         <p id="complimentDisplay" class="compliment-text"></p>
       </div>
     </section>
 
-    <!-- Interactive Quiz Game Section -->
+    <!-- Interactive Questions Section -->
     <section id="quizSection" class="section-area">
       <div class="section-heading">
-        <span class="script-subtitle">Fun & Playful Connection</span>
-        <h2 class="section-title">The "How Well Do We Match?" Quiz</h2>
-        <p class="section-desc">Answer some lighthearted questions, find your score, and see how both of you rank together!</p>
+        <span class="script-subtitle">A Little Game Just For Her</span>
+        <h2 class="section-title">Answer a Few Questions</h2>
+        <p class="section-desc">Pick what feels closest to your heart!</p>
         <div class="rose-divider">🌸 ✻ 🌸</div>
       </div>
 
       <div class="quiz-wrapper glass-card">
         
-        <!-- STEP 1: Ask Name Before Starting (As Requested) -->
+        <!-- STEP 1: Ask Name Before Starting -->
         <div id="quizNamePrompt" class="quiz-step active">
           <div class="name-box">
             <div class="flower-avatar">🌺</div>
-            <h3>Welcome to the Game!</h3>
-            <p>Before Kaif's questions begin, please tell us your name:</p>
+            <h3>Welcome!</h3>
+            <p>Before the questions begin, tell Kaif your name:</p>
             <div class="input-group">
               <input type="text" id="playerNameInput" placeholder="Enter your lovely name..." maxlength="25" />
-              <button class="btn-primary" onclick="startQuizWithName()">Start Game 🚀</button>
+              <button class="btn-primary" onclick="startQuizWithName()">Start 🌸</button>
             </div>
             <p id="nameError" class="error-msg"></p>
           </div>
@@ -193,99 +150,44 @@
           </div>
 
           <div class="quiz-header-meta">
-            <span id="quizCounterText">Question 1 of 5</span>
-            <span id="quizScorePreview">Score: 0</span>
+            <span id="quizCounterText">Question 1 of 4</span>
           </div>
 
           <h3 id="questionTitle" class="question-title">Loading Question...</h3>
 
-          <div id="optionsContainer" class="options-container">
-            <!-- Options dynamically populated by script.js -->
-          </div>
-
+          <div id="optionsContainer" class="options-container"></div>
           <div id="answerReaction" class="reaction-toast"></div>
         </div>
 
-        <!-- STEP 3: Results & Celebration Screen -->
+        <!-- STEP 3: Results & Sweet Appreciation Screen -->
         <div id="quizResultBox" class="quiz-step">
           <div class="result-celebration">
-            <div class="confetti-icon">🎉</div>
-            <h3 id="resultNameCongrats">Amazing Job!</h3>
-            <div class="final-score-badge">
-              <span id="finalScoreVal">100</span>
-              <span class="final-score-denom">/ 100</span>
-            </div>
-            <h4 id="resultTitle" class="result-title">Perfect Soul Connection 💖</h4>
+            <div class="confetti-icon">💌</div>
+            <h3 id="resultNameCongrats">Thank You!</h3>
             <p id="resultFeedback" class="result-feedback">
-              You both share such wonderful chemistry! Kaif will be smiling seeing this.
+              Your answers have been softly saved and sent to Kaif. You're wonderful! ✨
             </p>
+            <p id="sendStatus" class="send-status-text"></p>
 
-            <div class="result-buttons">
-              <button class="btn-primary" onclick="restartQuiz()">
-                <i class="fa-solid fa-rotate-left"></i> Play Again
-              </button>
-              <button class="btn-secondary" onclick="toggleQuestionEditor()">
-                <i class="fa-solid fa-pen-to-square"></i> Customize Questions
-              </button>
-            </div>
+            <button class="btn-primary" onclick="restartQuiz()">
+              <i class="fa-solid fa-rotate-left"></i> Play Again
+            </button>
           </div>
         </div>
 
-        <!-- Optional: Question Editor Modal for Kaif to customize -->
-        <div id="questionEditorDrawer" class="editor-drawer">
-          <div class="editor-header">
-            <h4>✏️ Kaif's Question Customizer</h4>
-            <button class="btn-close" onclick="toggleQuestionEditor()">&times;</button>
-          </div>
-          <p class="editor-subtext">Add or edit questions tailored just for her!</p>
-          <div id="editorQuestionsList" class="editor-list"></div>
-          <button class="btn-primary btn-sm" onclick="addNewBlankQuestion()">+ Add Another Question</button>
-        </div>
-
       </div>
-
-      <!-- Live Shared Scoreboard (Both Can See Scores) -->
-      <div class="scoreboard-wrapper glass-card">
-        <div class="scoreboard-header">
-          <h3><i class="fa-solid fa-trophy"></i> Live Shared Scoreboard</h3>
-          <span class="live-pill"><span class="pulse-dot"></span> Live Sync</span>
-        </div>
-        <p class="scoreboard-desc">
-          Both you and Kaif can see your scores updated here in real time:
-        </p>
-
-        <div class="table-responsive">
-          <table class="score-table">
-            <thead>
-              <tr>
-                <th>Rank</th>
-                <th>Player</th>
-                <th>Score</th>
-                <th>Vibe Level</th>
-                <th>Played At</th>
-              </tr>
-            </thead>
-            <tbody id="scoreboardBody">
-              <tr>
-                <td colspan="5" class="loading-td">Waiting for players to finish the game...</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-
     </section>
 
     <!-- Footer -->
     <footer class="page-footer">
-      <p>Crafted with care, blush roses & smiles for someone truly special 🌸</p>
-      <div class="footer-sub">Designed with love by Kaif</div>
+      <p>Crafted with blush roses & genuine thoughts 🌸</p>
+      <div class="footer-sub">Designed with care by Kaif</div>
     </footer>
 
   </div>
 
-  <!-- Bouquet Pop-up Modal -->
-  <div id="bouquetModal" class="modal-backdrop" onclick="closeBouquetModal(event)">
+  <!-- Bouquet Modal -->
+  <div id="bouquetModal" class="modal-backdrop" onclick="closeBouquetModal()">
     <div class="modal-content glass-card" onclick="event.stopPropagation()">
       <button class="modal-close-btn" onclick="closeBouquetModal()">&times;</button>
       <div class="modal-body">
